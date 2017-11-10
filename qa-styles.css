@@ -8,3 +8,73 @@
 	Theme License: GPL 2.0
 	Theme Update Check URI: https://raw.githubusercontent.com/Towhidn/CleanStrap/master/cleanstrap/qa-styles.css
 */
+
+.header-position-c {
+   background-position: center center !important;
+}
+.header-position-c .widget.cs_ajax_ask {
+   margin-top: 20px;
+}
+.header-position-c h1.intro-title {
+   display: none;
+   color: white;
+   text-shadow: 0 0 3px #555;
+   font-size: 20px;
+}
+.qa-q-list-item .ans-count {
+   line-height: 40px;
+}
+
+.qa-q-list-item .ans-count span {
+   display: none !important;
+}
+
+.qa-suggest-next {
+   display: none;
+}
+
+.qa-part-form-q-edit {
+   margin-bottom: 30px;
+}
+
+.post-button .featured-image-btn, .post-button button[name=q_docomment] {
+   float: right;
+}
+
+.qa-attribution-right {
+   display: none;
+}
+
+@media only screen and (max-width: 1100px) {
+    #site-header .qa-nav-main {
+      background: none repeat scroll 0 0 #FFFFFF;
+      bottom: 0;
+      float: none;
+      left: -180px;
+      position: fixed;
+      top: 45px;
+      width: 180px;
+      z-index: 999;
+      width: 0;
+    }
+
+    .slide-mobile-menu.icon-list {
+       display: block;
+    }
+}
+
+@media only screen and (max-width : 990px){
+   .question-sidebar, #home-right-position {
+       margin: 20px 15px;
+   }
+
+   .widget {
+       width: 100% !important;
+   }
+}
+
+@media only screen and (max-width : 480px){
+   .header-position-c {
+       display: block !important;
+   }
+}
