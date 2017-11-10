@@ -90,6 +90,7 @@ class qa_html_theme extends qa_html_theme_base
 		else {
 			$this->output('<link rel="stylesheet" type="text/css" href="' . Q_THEME_URL . '/css/font.css"/>');
 			$this->output('<link rel="stylesheet" type="text/css" href="' . Q_THEME_URL . '/css/bootstrap.css"/>');
+			// $this->output('<link rel="stylesheet" type="text/css" href="' . Q_THEME_URL . '/css/jquery-ui.min.css"/>');
 			$this->output('<link rel="stylesheet" type="text/css" href="' . Q_THEME_URL . '/css/main.css"/>');
 			$this->output('<link rel="stylesheet" type="text/css" href="' . Q_THEME_URL . '/css/wide.css"/>');
 			$this->output('<link rel="stylesheet" type="text/css" href="' . Q_THEME_URL . '/css/responsive.css"/>');
@@ -809,38 +810,28 @@ class qa_html_theme extends qa_html_theme_base
 		$timeCode	= $q_item['when'];
 		$when		= @$timeCode['prefix'] . @$timeCode['data'] . @$timeCode['suffix'];
 		
-		if ($enable_avatar && isset($q_item['avatar']) && !((bool) qa_opt('cs_enable_clean_qlist'))) {
-			$this->output('<div class="asker-avatar">');
-			$this->output(cs_get_post_avatar($avatar_arg, $q_item['raw']['userid'], $avatar_size, true));
-			$this->output('</div>');
-		}
+		// $this->voting($q_item);
+		$this->output('<div class="ans-count total-' . $q_item['raw']['acount'] . '">' . $q_item['raw']['acount'] . '<span>'.qa_lang('cleanstrap/ans') . '</span></div>');
+
+		$this->output('<div class="asker-avatar">');
+		$this->output(cs_get_post_avatar($avatar_arg, $q_item['raw']['userid'], $avatar_size, true));
+		$this->output('</div>');
 		$this->output('<div class="qa-q-item-main">');
-		if (!(bool) qa_opt('cs_enable_clean_qlist')){
-			$this->output('<div class="ans-count total-' . $q_item['raw']['acount'] . '">' . $q_item['raw']['acount'] . '<span>'.qa_lang('cleanstrap/ans') . '</span></div>');
-		}
 		$this->output('<div class="q-item-head">');
-		
-		
-		if ($enable_avatar && (bool) qa_opt('cs_enable_clean_qlist')) {
-			 
-			$this->output('<div class="count-time"><span class="time">' . $when . '</span>');
-			$this->output('<span class="ans-count total-' . $q_item['raw']['acount'] . '">' . $q_item['raw']['acount'] . '</span></div>');
-			$this->output(cs_get_post_avatar($avatar_arg, $q_item['raw']['userid'], $avatar_size, true));
-			$this->output('<span class="status-c">' . cs_post_status($q_item) . '</span>');
-		}
-		
 		$this->q_item_title($q_item);
-		if (!(bool) qa_opt('cs_enable_clean_qlist')) {
-			$this->output('<div class="list-meta">');
-			$this->output(cs_post_status($q_item));
-			$this->post_meta($q_item, 'qa-q-item');
-			qa_html_theme_base::view_count($q_item);
-			if (qa_opt('cs_show_tags_list')) {
-				$this->output('<span>' . qa_lang('cleanstrap/tagged') . ': </span>');
-				$this->post_tag_list($q_item, 'list-tag');
-			}
-			$this->output('</div>');
+		$this->output('<div class="list-meta">');
+		$this->output(cs_post_status($q_item));
+		$this->post_meta($q_item, 'qa-q-item');
+		$this->output('<span class="vote-count icon-thumbs-up2 qa-q-item-meta"> ' . qa_lang_sub('cleanstrap/x_votes', $q_item['raw']['netvotes']) . '</span>');
+		// $this->output('<span class="ans-count total-' . $q_item['raw']['acount'] . '">'.$q_item['raw']['acount'].' '.qa_lang('cleanstrap/answers').'</span>');
+		qa_html_theme_base::view_count($q_item);
+		
+		if (qa_opt('cs_show_tags_list')) {
+			$this->output('<span>' . qa_lang('cleanstrap/tagged') . ': </span>');
+			$this->post_tag_list($q_item, 'list-tag');
 		}
+		$this->output('</div>');
+
 		$this->output('</div>');
 		
 		$this->q_item_content($q_item);
