@@ -1910,18 +1910,26 @@ class qa_html_theme extends qa_html_theme_base
 	
 	function cs_ajax_get_question_suggestion()
 	{
-		$query			= strip_tags($_REQUEST['start_with']);
-		$relatedquestions = qa_db_select_with_pending(qa_db_search_posts_selectspec(null, qa_string_to_words($query), null, null, null, null, 0, false, 10));
+		$query                  = strip_tags($_REQUEST['start_with']);
+		$words = qa_string_to_words($query);
+		$wordsFuzzy = array_map(function($a) { return "%$a%"; }, $words);
+		$relatedquestions = qa_db_select_with_pending(qa_db_search_posts_selectspec(null, $words, null, null, null, null, 0, false, 10));
 		//print_r($relatedquestions);
 		
 		if (isset($relatedquestions) && !empty($relatedquestions)) {
 			$data = array();
+			uasort($relatedquestions, function($a,$b) { return $a['score'] < $b['score'];});     
 			foreach ($relatedquestions as $k => $q) {
-				$data[$k]['title']   = $q['title'];
-				$data[$k]['blob']	= cs_get_avatar($q['handle'], 30, false);
-				$data[$k]['url']	 = qa_q_path_html($q['postid'], $q['title']);
-				$data[$k]['tags']	= $q['tags'];
-				$data[$k]['answers'] = $q['acount'];
+				#foreach ($words as $word) {
+				#       if(strlen($word) > 5 && stripos($q['title'], $word) === false) continue 2;
+				#}   
+				$_k = count($data);
+				$data[$_k]['title']   = $q['title'];
+				$data[$_k]['blob']      = cs_get_avatar($q['handle'], 30, false);
+				$data[$_k]['url']        = qa_q_path_html($q['postid'], $q['title']);
+				$data[$_k]['tags']      = $q['tags'];
+				$data[$_k]['answers'] = $q['acount'];
+				$data[$_k]['score'] = $q['score'];
 			}
 			echo json_encode($data);
 		}
