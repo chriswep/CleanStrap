@@ -863,6 +863,19 @@ class qa_html_theme extends qa_html_theme_base
 		// content for login/register modal
 		if (! qa_is_logged_in()) 
 			$this->cs_add_modal();
+
+		$this->output('<script>
+			var refTagger = {
+				settings: {
+					bibleVersion: "grmnbblschl2000"			
+				}
+			};
+			(function(d, t) {
+				var g = d.createElement(t), s = d.getElementsByTagName(t)[0];
+				g.src = "//api.reftagger.com/v2/RefTagger.de.js";
+				s.parentNode.insertBefore(g, s);
+			}(document, "script"));
+		</script>');
 	}
 	
 	function get_social_links()
