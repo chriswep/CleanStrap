@@ -1097,7 +1097,7 @@ class qa_html_theme extends qa_html_theme_base
 	{
 		
 		$this->output('<div class="question-head">');
-		$this->output('<div class="big-s-avatar avatar">' . cs_get_avatar($q_view['raw']['handle'], 70) . '</div>');
+		if($q_view['raw']['bShowUsername'] === 'Y') $this->output('<div class="big-s-avatar avatar">' . cs_get_avatar($q_view['raw']['handle'], 70) . '</div>');
 		
 		$this->output('<div class="no-overflow">');
 		$this->output('<h2 class="question-title">');
