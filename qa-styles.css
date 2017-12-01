@@ -41,6 +41,10 @@
    display: none !important;
 }
 
+.qa-q-list-item .asker-avatar {
+    width: 30px;
+}
+
 .qa-suggest-next {
    display: none;
 }

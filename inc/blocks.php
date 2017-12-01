@@ -812,9 +812,8 @@ class qa_html_theme extends qa_html_theme_base
 		
 		// $this->voting($q_item);
 		$this->output('<div class="ans-count total-' . $q_item['raw']['acount'] . '">' . $q_item['raw']['acount'] . '<span>'.qa_lang('cleanstrap/ans') . '</span></div>');
-
 		$this->output('<div class="asker-avatar">');
-		$this->output(cs_get_post_avatar($avatar_arg, $q_item['raw']['userid'], $avatar_size, true));
+		if($q_item['raw']['bShowUsername'] === 'Y') $this->output(cs_get_post_avatar($avatar_arg, $q_item['raw']['userid'], $avatar_size, true));
 		$this->output('</div>');
 		$this->output('<div class="qa-q-item-main">');
 		$this->output('<div class="q-item-head">');
@@ -1244,6 +1243,36 @@ class qa_html_theme extends qa_html_theme_base
 		}
 		$this->output('</div>');
 	}
+
+	public function post_meta_who($post, $class)
+	{
+		if (isset($post['who']) && $post['raw']['bShowUsername'] === 'Y') {
+			$this->output('<span class="' . $class . '-who">');
+
+			if (strlen(@$post['who']['prefix']))
+				$this->output('<span class="' . $class . '-who-pad">' . $post['who']['prefix'] . '</span>');
+
+			if (isset($post['who']['data']))
+				$this->output('<span class="' . $class . '-who-data">' . $post['who']['data'] . '</span>');
+
+			if (isset($post['who']['title']))
+				$this->output('<span class="' . $class . '-who-title">' . $post['who']['title'] . '</span>');
+
+			// You can also use $post['level'] to get the author's privilege level (as a string)
+
+			if (isset($post['who']['points'])) {
+				$post['who']['points']['prefix'] = '(' . $post['who']['points']['prefix'];
+				$post['who']['points']['suffix'] .= ')';
+				$this->output_split($post['who']['points'], $class . '-who-points');
+			}
+
+			if (strlen(@$post['who']['suffix']))
+				$this->output('<span class="' . $class . '-who-pad">' . $post['who']['suffix'] . '</span>');
+
+			$this->output('</span>');
+		}
+	}
+
 	function post_tags($post, $class)
 	{
 		if (!empty($post['q_tags'])) {
